@@ -16,11 +16,11 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Landing />,
+    element: <Login />,
   },
   {
-    path: '/login',
-    element: <Login />,
+    path: '/landing',
+    element: <Landing/>
   },
   {
     path: '/register',
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/singlepage',
-    element: <SinglePage article={[]} url={undefined} author={undefined} urlToImage={undefined} title={undefined} description={undefined} />,
+    element: <SinglePage article={[]} url={undefined} author={undefined} urlToImage={undefined} title={undefined} description={undefined} publishedAt={undefined} />,
   },
 ])
 
