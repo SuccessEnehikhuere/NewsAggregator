@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { useQuery } from 'react-query'
-import { fetchData } from '../utilis'
 import axios from 'axios'
-import { SinglePage } from '.'
-import NewsComponent from '../components/search'
-import Pagination from '../components/Pagination'
+import { SinglePage } from './index'
+
 import Header from '../components/Header'
 
 interface Article {
@@ -14,105 +12,122 @@ interface Article {
   urlToImage: any
   title: any
   description: any
+  publishedAt: any
 }
 
+const API_KEY: string = '95ee27b835b146aa9f970467509705e3';
+const PAGE_SIZE: number = 10 //number of articles per page
 
-const API_KEY: string = '95ee27b835b146aa9f970467509705e3'
+const NewsPage: React.FC = () => {
+  const [articles, setArticles] = useState<Article[]>([])
+  const [query, setQuery] = useState<string>('')
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [totalPages, setTotalPages] = useState<number>(1)
+  const [loading, setLoading] = useState<boolean>(true) // State to manage loading state
 
-const Landing: React.FC = () => {
-const [articles, setArticles] = useState<Article[]>([])
-const [query, setQuery] = useState<string>('')
-
-const fetchNews = async () => {
-  try {
-    const response = await axios.get<{ articles: Article[] }>(
-      'https://newsapi.org/v2/everything',
-      {
-        params: {
-          q: query, // search query
-          apiKey: API_KEY
-        },
-      }
-    )
-    setArticles(response.data.articles)
-  } catch (error) {
-    console.error('Error fetching news:', error)
-  }
-}
-
-// useEffect(()=>{
-//   fetchNews()
-// })
-
-// const handleSearch = () => {
-//   fetchNews()
-// }
-
-return (
-    <section>
-      <Header/>
-      {/* <NewsComponent /> */}
-      <div className="mx-auto py-6 bg-slate-50">
-        <form
-          style={{ gridTemplateColumns: '1fr auto' }}
-          className="grid mb-20 w-4/5 lg:w-1/2 bg-white rounded-md shadow-md p-8 mx-auto "
-        >
-          <input
-            type="text"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            className="w-full py-1.5 px-2.5 rounded-l-md bg-[#f8fafc] border-[1px] border-slate-200"
-          />
-          <button onClick={()=>fetchNews()} className='text-white bg-primary rounded-r-md py-1.5 px-2.5 tracking-wider' type='submit'>Search</button>
-        </form>
-  
-        <div className="pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {articles.map((article, index) => {
-            return <SinglePage article={[]} key={index} {...article} />
-          })}
-        </div>
-      </div>
-      <Pagination />
-    </section>
-
-)
-
-
-
-
-
-
-
-
-
-
-  // const [articles, setArticles] = useState<Article[]>([]);
-  // const [query, setQuery] = useState<string>('')
-
-  // const fetchNews = async () => {
+  const fetchNews = async (page?: number) => {
+  //   setLoading(true); // Set loading to true before fetching data
   //   try {
-  //     const response = await axios.get<{ articles: Article[] }>(
+  //     const response = await axios.get<{ articles: Article[]; totalResults: number; }>(
   //       'https://newsapi.org/v2/everything',
   //       {
   //         params: {
-  //           q: query? query : 'everything', // Example query for latest news
-  //           apiKey: API_KEY, // replace with your API key
+  //           q: query? query : 'Apple', // Example query
+  //           apiKey: API_KEY,
+  //           page: page,
+  //           pageSize: PAGE_SIZE
   //         },
   //       }
-  //     );
-  //     setArticles(response.data.articles);
+  //     )
+  //     console.log(response.data.articles)
+  //     setArticles(response.data.articles)
+  //     setTotalPages(Math.ceil(response.data.totalResults / PAGE_SIZE));
+
   //   } catch (error) {
-  //     console.error('Error fetching news:', error);
-  //   }
-  // };
+  //     console.error('Error fetching news:', error)
+  //   } finally {
+  //   setLoading(false); // Set loading to false after fetching data (whether success or error)
+  //  }
+  }
 
   // useEffect(() => {
-  //   fetchNews();
-  // }, []); // Fetch news only once when the component mounts
+  //   fetchNews(currentPage)
+  // }, [currentPage]) // Fetch news only once when the component mounts
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1)
+    }
+  }
 
-  // return (
-  // )
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1)
+    }
+  }
+
+  return (
+    <div>
+      {/* Header */}
+      <Header />
+
+      {/* form input */}
+      <form
+        style={{ gridTemplateColumns: '1fr auto' }}
+        className="grid mb-20 w-4/5 lg:w-1/2 rounded-md shadow-md p-8 mx-auto mt-6"
+      >
+        <input
+          type="search"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="search articles"
+          className="input input-bordered w-full py-2 px-2.5 rounded-r-none bg-border-[1px] border-slate-200 capitalize text-sm lg:text-lg "
+        />
+        <button
+          onClick={(e) => {
+            e.preventDefault()
+            fetchNews()
+          }}
+          className="text-white bg-secondary rounded-r-md py-2.5 px-2.5 tracking-wider  text-sm lg:text-lg"
+          type="submit"
+        >
+          Search
+        </button>
+      </form>
+
+      {/* Loading spinner */}
+      {loading && (
+        <div className="flex justify-center mt-4">
+          <span className="loading loading-spinner loading-lg" />
+        </div>
+      )}
+
+      {/* news articles*/}
+      <div className="pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3 ">
+        {articles.map((article, index) => {
+          return <SinglePage article={[]} key={index} {...article} />
+        })}
+      </div>
+
+      {/* pagination */}
+      <div className="flex justify-end my-4 mx-auto">
+        <button
+          onClick={handlePreviousPage}
+          disabled={currentPage === 1}
+          className=" py-2 px-4 text-white bg-secondary rounded-l-md tracking-wide ml-2 cursor-pointer"
+        >
+          Previous
+        </button>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className="py-2 px-4 text-white bg-secondary rounded-r-md tracking-wide mr-2 cursor-pointer"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  )
 }
 
-export default Landing
+export default NewsPage
