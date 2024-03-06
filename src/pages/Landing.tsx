@@ -26,33 +26,33 @@ const NewsPage: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true) // State to manage loading state
 
   const fetchNews = async (page?: number) => {
-  //   setLoading(true); // Set loading to true before fetching data
-  //   try {
-  //     const response = await axios.get<{ articles: Article[]; totalResults: number; }>(
-  //       'https://newsapi.org/v2/everything',
-  //       {
-  //         params: {
-  //           q: query? query : 'Apple', // Example query
-  //           apiKey: API_KEY,
-  //           page: page,
-  //           pageSize: PAGE_SIZE
-  //         },
-  //       }
-  //     )
-  //     console.log(response.data.articles)
-  //     setArticles(response.data.articles)
-  //     setTotalPages(Math.ceil(response.data.totalResults / PAGE_SIZE));
+    setLoading(true); // Set loading to true before fetching data
+    try {
+      const response = await axios.get<{ articles: Article[]; totalResults: number; }>(
+        'https://newsapi.org/v2/everything',
+        {
+          params: {
+            q: query? query : 'Apple', // Example query
+            apiKey: API_KEY,
+            page: page,
+            pageSize: PAGE_SIZE
+          },
+        }
+      )
+      console.log(response.data.articles)
+      setArticles(response.data.articles)
+      setTotalPages(Math.ceil(response.data.totalResults / PAGE_SIZE));
 
-  //   } catch (error) {
-  //     console.error('Error fetching news:', error)
-  //   } finally {
-  //   setLoading(false); // Set loading to false after fetching data (whether success or error)
-  //  }
+    } catch (error) {
+      console.error('Error fetching news:', error)
+    } finally {
+    setLoading(false); // Set loading to false after fetching data (whether success or error)
+   }
   }
 
-  // useEffect(() => {
-  //   fetchNews(currentPage)
-  // }, [currentPage]) // Fetch news only once when the component mounts
+  useEffect(() => {
+    fetchNews(currentPage)
+  }, [currentPage]) // Fetch news only once when the component mounts
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
