@@ -1,4 +1,3 @@
-import React from 'react'
 import { Form } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { FormInput, SubmitBtn } from '../components'
@@ -41,7 +40,6 @@ const Login = () => {
   const handleSignIn = async (e: { preventDefault: () => void }) => {
     try {
       e.preventDefault()
-      setIsLoading(true)
 
       if (isDataAvailable && storedUserDetails && signInData) {
         if (
@@ -60,7 +58,7 @@ const Login = () => {
     } catch (error) {
       console.error('Error in handleSignIn:', error)
     } finally {
-      setIsLoading(false)
+  
     }
   }
 

@@ -1,29 +1,21 @@
-import React, { FC, MouseEvent } from 'react'
-import { Link, To } from 'react-router-dom'
+import React, {  MouseEvent } from 'react'
 import img from '../assets/pexels-thought-catalog-904616.jpg'
-import { MdSaveAlt } from 'react-icons/md'
-import { Article } from './Landing'
 import { IconType } from 'react-icons'
-// interface newsArticles {
-//   publishedAt: any
-//   url: any
-//   author: any
-//   urlToImage: any
-//   title: any
-//   description: any
-//   article: {
-//     author: any
-//     title: string
-//     publishedAt: string
-//     urlToImage: string
-//   }[]
-// }
-// interface saveArticles {
-//   saveArticles: (e: ChangeEvent<HTMLInputElement>) => void
-// }
+
+
+
+interface SavedArticle {
+  url: string
+  author: string | null
+  urlToImage: string | null
+  title: string | null
+  description: string | null
+  publishedAt: string | null
+}
+
 
 interface Props {
-  article: Article
+  article: SavedArticle
   // saveArticle: (article: Article) => void
   icon: IconType
   onClick: (e: MouseEvent<HTMLButtonElement>) => void
@@ -37,13 +29,12 @@ const SinglePage: React.FC<Props> = ({article, icon: Icon, onClick}) => {
       <figure className="pt-4 px-4">
         <img
           src={article.urlToImage === null ? img : article.urlToImage}
-          alt={article.title}
           className="rounded-xl h-64 md:h-48  object-cover mx-auto"
         />
       </figure>
       <div className="card-body items-center ">
         <h2 className="card-title capitalize tracking-wider">
-          {article.title.slice(0, 23)}
+          {article.title ?.slice(0, 23)}
         </h2>
         <h4 className="font-bold">{article.publishedAt}</h4>
         <p>

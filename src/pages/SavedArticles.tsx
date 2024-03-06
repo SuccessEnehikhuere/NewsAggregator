@@ -58,6 +58,7 @@ const SavedArticles: React.FC = () => {
 
       <div className="pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3 ">
         {savedArticles.map((article, index) => (
+          console.log(article),
           <SinglePage
             key={index}
             article={article}

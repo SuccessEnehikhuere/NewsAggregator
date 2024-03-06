@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from 'react'
+import  { ChangeEvent, } from 'react'
 
 interface UserDetails {
   label: string

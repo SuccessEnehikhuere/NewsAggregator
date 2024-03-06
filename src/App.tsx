@@ -2,7 +2,6 @@ import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Landing, Login, SinglePage , Register, SavedArticles} from './pages'
-import { Article } from './pages/Landing'
 import { IconBaseProps } from 'react-icons'
 
 
