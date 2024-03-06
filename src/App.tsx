@@ -1,8 +1,8 @@
-import React from 'react'
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { Landing, Login, SinglePage , Register, SavedArticles} from './pages'
-import { IconBaseProps } from 'react-icons'
+
 
 
 //the staletime configures the time, in miliseconds, after which the cached data is considered stale.
@@ -39,12 +39,12 @@ const router = createBrowserRouter([
           description: 'someDescription',
           publishedAt: 'someDate',
         }}
-        icon={function (props: IconBaseProps): JSX.Element {
+        icon={function () {
           throw new Error('Function not implemented.')
         }}
         onClick={function (
-          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-        ): void {
+          
+        ) {
           throw new Error('Function not implemented.')
         }}
       />

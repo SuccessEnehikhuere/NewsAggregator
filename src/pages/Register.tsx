@@ -1,4 +1,3 @@
-import React from 'react'
 import { FormInput, SubmitBtn } from '../components'
 import { Form, Link } from 'react-router-dom'
 import { toast } from 'react-toastify'

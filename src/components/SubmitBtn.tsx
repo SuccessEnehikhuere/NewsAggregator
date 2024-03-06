@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react'
+import {  MouseEvent } from 'react'
 import { useNavigation } from 'react-router-dom'
 
 interface submitBtn {
