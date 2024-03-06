@@ -1,7 +1,9 @@
 import React from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from 'react-query'
-import { Landing, Login, SinglePage , Register} from './pages'
+import { Landing, Login, SinglePage , Register, SavedArticles} from './pages'
+import { Article } from './pages/Landing'
+import { IconBaseProps } from 'react-icons'
 
 
 //the staletime configures the time, in miliseconds, after which the cached data is considered stale.
@@ -16,19 +18,42 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Login />,
+    element: <Register />,
   },
   {
     path: '/landing',
-    element: <Landing/>
+    element: <Landing />,
   },
   {
-    path: '/register',
-    element: <Register />
+    path: '/login',
+    element: <Login />,
   },
   {
     path: '/singlepage',
-    element: <SinglePage article={[]} url={undefined} author={undefined} urlToImage={undefined} title={undefined} description={undefined} publishedAt={undefined} />,
+    element: (
+      <SinglePage
+        article={{
+          url: 'someUrl',
+          author: 'someAuthor',
+          urlToImage: 'someUrlToImage',
+          title: 'someTitle',
+          description: 'someDescription',
+          publishedAt: 'someDate',
+        }}
+        icon={function (props: IconBaseProps): JSX.Element {
+          throw new Error('Function not implemented.')
+        }}
+        onClick={function (
+          e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+        ): void {
+          throw new Error('Function not implemented.')
+        }}
+      />
+    ),
+  },
+  {
+    path: '/Savedarticles',
+    element: <SavedArticles />,
   },
 ])
 
