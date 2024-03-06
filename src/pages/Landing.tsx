@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { useLoaderData } from 'react-router-dom'
-import { useQuery } from 'react-query'
 import axios from 'axios'
 import { SinglePage } from './index'
-
 import Header from '../components/Header'
+import { MdSaveAlt } from 'react-icons/md'
+import { toast } from 'react-toastify'
 
-interface Article {
+export interface Article {
   url: string
   author: any
   urlToImage: any
@@ -18,7 +17,7 @@ interface Article {
 const API_KEY: string = '95ee27b835b146aa9f970467509705e3';
 const PAGE_SIZE: number = 10 //number of articles per page
 
-const NewsPage: React.FC = () => {
+const Landing: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([])
   const [query, setQuery] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -39,7 +38,7 @@ const NewsPage: React.FC = () => {
           },
         }
       )
-      console.log(response.data.articles)
+      console.log(response.data.articles )
       setArticles(response.data.articles)
       setTotalPages(Math.ceil(response.data.totalResults / PAGE_SIZE));
 
@@ -50,9 +49,9 @@ const NewsPage: React.FC = () => {
    }
   }
 
-  useEffect(() => {
-    fetchNews(currentPage)
-  }, [currentPage]) // Fetch news only once when the component mounts
+  // useEffect(() => {
+  //   fetchNews(currentPage)
+  // }, [currentPage]) // Fetch news only once when the component mounts
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -64,6 +63,15 @@ const NewsPage: React.FC = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1)
     }
+  }
+
+  const saveArticle = (article: Article) => {
+    let savedArticles: Article[] = JSON.parse(
+      localStorage.getItem('savedArticles') || '[]'
+    )
+    savedArticles.push(article)
+    toast.success('saved successfully!')
+    localStorage.setItem('savedArticles', JSON.stringify(savedArticles))
   }
 
   return (
@@ -105,7 +113,14 @@ const NewsPage: React.FC = () => {
       {/* news articles*/}
       <div className="pt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3 ">
         {articles.map((article, index) => {
-          return <SinglePage article={[]} key={index} {...article} />
+          return (
+            <SinglePage
+              article={article}
+              key={index}
+              onClick={()=>saveArticle(article)}
+              icon={MdSaveAlt}
+            />
+          )
         })}
       </div>
 
@@ -130,4 +145,4 @@ const NewsPage: React.FC = () => {
   )
 }
 
-export default NewsPage
+export default Landing

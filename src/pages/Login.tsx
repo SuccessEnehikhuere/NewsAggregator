@@ -17,7 +17,6 @@ const Login = () => {
     password: '',
   })
 
-  const [isLoading, setIsLoading] = useState(false)
   const [storedUserDetails, setStoredUserDetails] =
     useState<UserDetails | null>(null) // Using UserDetails | null to represent initial state
 
@@ -101,7 +100,7 @@ const Login = () => {
         <p className="text-center">
           not a member yet?
           <Link
-            to="/register"
+            to="/"
             className="ml-2 link link-hover link-primary font-bold"
           >
             register

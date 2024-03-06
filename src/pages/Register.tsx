@@ -1,46 +1,43 @@
 import React from 'react'
 import { FormInput, SubmitBtn } from '../components'
 import { Form, Link } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
-   const [registrationData, setRegistrationData] = useState({
-     name: '',
-     email: '',
-     password: '',
+  const [registrationData, setRegistrationData] = useState({
+    name: '',
+    email: '',
+    password: '',
+  })
 
-   })
+  const navigate = useNavigate()
+  const handleRegistration = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
+    if (
+      registrationData.name === '' &&
+      registrationData.email === '' &&
+      registrationData.password === ''
+    ) {
+      toast.error('input fields are empty!')
+      return
+    }
+    if (
+      registrationData &&
+      registrationData.name &&
+      registrationData.email &&
+      registrationData.password
+    ) {
+      localStorage.setItem('userDetails', JSON.stringify(registrationData))
 
-   const navigate = useNavigate()
-   const handleRegistration = (e: { preventDefault: () => void }) => {
-     e.preventDefault()
-     if (
-       registrationData.name === '' &&
-       registrationData.email === '' &&
-       registrationData.password === ''
-      
-     ) {
-       toast.error('input fields are empty!')
-       return
-     }
-     if (
-       registrationData &&
-       registrationData.name &&
-       registrationData.email &&
-       registrationData.password 
-      
-     ) {
-       localStorage.setItem('userDetails', JSON.stringify(registrationData))
-
-       toast.success('User registered successfully!')
-       navigate('/')
-     } else {
-       toast.error('Invalid registration data')
-       return
-     }
-   }
+      toast.success('User registered successfully!')
+      navigate('/login')
+    } else {
+      toast.error('Invalid registration data')
+      return
+    }
+  }
 
   return (
     <section className="h-screen grid place-items-center">
@@ -75,19 +72,23 @@ const Register = () => {
           label="password"
           id="password"
           onChange={(e) =>
-            setRegistrationData({ ...registrationData, password: e.target.value })
+            setRegistrationData({
+              ...registrationData,
+              password: e.target.value,
+            })
           }
           value={registrationData.password}
         />
         <div className="mt-4">
-          <Link to="/">
-            <SubmitBtn text="submit" onClick={handleRegistration} />
-          </Link>
+          <SubmitBtn text="submit" onClick={handleRegistration} />
         </div>
 
         <p className="text-center">
           already a member?
-          <Link to="/" className="ml-2 link link-hover link-primary font-bold">
+          <Link
+            to="/login"
+            className="ml-2 link link-hover link-primary font-bold"
+          >
             login
           </Link>
         </p>
